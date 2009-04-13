@@ -1,0 +1,25 @@
+This is a stripped down version of the code I used on lettersfromexes.com.
+
+The intended flow is:
+
+ - User posts a message to your site; that message is saved as inactive.
+
+ - On manual approval via the admin, marking the message as active triggers the script that posts to a Twitter account.
+
+ - That Twitter status update contains a link back to your site.
+
+ - Users visiting your site can see an individual message, or a list of all recent messages.
+
+The script that handles the post to Twitter first constructs a single view url for the message, based on the message's id, then calls out to TinyUrl to shorten it (use whatever url shortening API you feel comfortable with, just assign the response to 'short_url').
+
+The original message is then truncated to accommodate the addition of the shortened url, keeping the total character count under 140 characters.
+
+The revised message, containing the link back to your site, is then posted to Twitter.
+
+Two values you need to set in twitterpost.py (these could probably also be moved to project settings):
+
+ - SINGLEVIEW - replace with a url representing an individual item view, e.g. 'http://www.lettersfromexes.com/id/4'
+
+ - replace twitter_username and twitter_password with settings for your own account
+
+

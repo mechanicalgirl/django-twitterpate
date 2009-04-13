@@ -29,12 +29,12 @@ def main():
         long_url = SINGLEVIEW + message_id
         request = urllib2.Request("http://tinyurl.com/api-create.php?url="+long_url)
         response = urllib2.urlopen(request) 
-	s = response.read()
+	short_url = response.read()
 
-	slen = len(s)
+	slen = len(short_url)
 	message_length = 135 - slen
 	message = message[0:message_length]
-	message = message + " ... " + s
+	message = message + " ... " + short_url
 
         request = urllib2.Request('http://twitter.com/statuses/update.json')
         request.headers['Authorization'] = 'Basic %s' % ( base64.b64encode(twitter_username + ':' + twitter_password),)
