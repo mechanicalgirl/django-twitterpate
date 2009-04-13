@@ -36,6 +36,11 @@
             </div>
         {% endfor %}
         </div>
+        <div class="pagination" align="center">
+            {% for page in page_range %}
+                <a href="/?page={{ page }}">{{ page }}</a>
+            {% endfor %}
+        </div>
     {% else %}
         <div><!-- No posts yet. --></div>
     {% endif %}

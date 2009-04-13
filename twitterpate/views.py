@@ -17,9 +17,11 @@ def show_all(request, form=PostForm):
     template_name = 'all.html'
     context = {}
     message = ''
+    per_page = 5
+    page = int(request.GET.get('page', '1'))
 
     try:
-        all_tweets = Post.objects.filter(posted=True).order_by('-post_date')[:5]
+        all_tweets = Post.objects.filter(posted=True).order_by('-post_date', '-id')
     except ObjectDoesNotExist:
 	all_tweets = None
 
@@ -38,6 +40,13 @@ def show_all(request, form=PostForm):
 	tweet.post_date = datetime.datetime(tweet.post_date.year, tweet.post_date.month, tweet.post_date.day)
 	tweet.post_date = tweet.post_date.strftime("%m-%d-%Y")
 
+    total_entries = all_tweets.count()
+    total_pages = (total_entries/per_page)+1
+    context['page_range'] = range(1, total_pages+1)
+
+    offset = (page * per_page) - per_page
+    limit = offset + per_page
+    all_tweets = all_tweets[offset:limit]
     context['tweet_list'] = all_tweets
 
     return render_to_response(template_name, context, context_instance=RequestContext(request))
