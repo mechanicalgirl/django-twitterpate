@@ -30,6 +30,15 @@ def show_all(request, form=PostForm):
         if form.is_valid():
 	    message = form.cleaned_data['message']
             form.save()
+
+            saved = Post.objects.get(message = message)
+            from django.core.mail import send_mail
+            email_dict = { 'message': request.POST['message'], 'date': 'today', 'post_id': saved.id }
+            email_dict['site'] = Site.objects.get_current()
+            subject = "Message posted on " + str(email_dict['site'])
+            body = render_to_string('message_notification.txt', email_dict)
+            sent = send_mail(subject, body, settings.ADMIN_EMAIL, [settings.ADMIN_EMAIL])
+
     else:
         form = form()
    
