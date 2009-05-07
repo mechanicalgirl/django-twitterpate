@@ -41,10 +41,10 @@ def main():
         request.data = urllib.urlencode({'status': message})
         response = urllib2.urlopen(request) # The Response
 
-        a = response.read()
-        b = a.split(',') ## convert the whole thing to a list
-        c = b[30] ## count on 'id' being the 30th item in the list??
-        d = int(c[5:]) ## strip off first part of string - 'id':
+        null = 0
+        false = 0
+        a = eval(response.read()) 
+        d = int(a["id"])
         
 	if response.code == 200 and type(d) == int:
 	    record_id = record["id"]
